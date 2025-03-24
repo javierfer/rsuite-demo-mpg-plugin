@@ -17,3 +17,6 @@ Create a gradle.properties file at root level, set the "rsuite_plugins" property
 ./gradlew build -> optional, to build the plugin
 ./gradlew deployLocally -> build and deploy to the RSuite plugins directory.
 ```
+## Setup
+
+See setup/readme.txt
