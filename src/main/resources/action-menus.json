@@ -1,0 +1,58 @@
+[
+    {
+        "pluginName": "rsuite-demo-mpg-plugin",
+        "scope": "browseTreeNode",
+        "menus": [
+            {
+                "actionName": "rsuite:customAction:workflows",
+                "label": "Workflows",
+                "icon": "group_work",
+                "target": "folder",
+                "items": [
+                    {
+                        "actionName": "rsuite:customAction:demo.mpg.workflow.manuscript",
+                        "label": "Start Manuscript Workflow",
+                        "icon": "description",
+                        "target": "folder",
+                        "formId": "rsuite.demo.mpg.form.manuscript",
+                        "webserviceUrl": "demo.mpg.webservice.startWorkflow",
+                        "ruleList": [
+                            {
+                                "rule": "include nodeType ca"
+                            }
+                        ],
+                        "serviceParams": [
+                            {
+                                "label": "processDefinitionName",
+                                "value": "ManuscriptWorkflowAction"
+                            },
+                            {
+                                "label": "workflowPhase",
+                                "value": "init"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "pluginName": "rsuite-demo-mpg-plugin",
+        "scope": "taskActions",
+        "menus": [
+            {
+                "actionName": "rsuite:customAction:demo.mpg.workflow.update",
+                "label": "Update Workflow Details",
+                "icon": "edit_note",
+                "lang": true,
+                "webserviceUrl": "demo.mpg.webservice.redirector",
+                "serviceParams": [
+                    {
+                        "label": "invokeWebServiceAction",
+                        "value": "demo.mpg.webservice.updateWorkflow"
+                    }
+                ]
+            }
+        ]
+    }
+]

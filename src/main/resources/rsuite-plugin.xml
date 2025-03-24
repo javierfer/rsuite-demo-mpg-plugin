@@ -1,0 +1,221 @@
+<rsuite-plugin id="rsuite-demo-mpg-plugin" version="1.0">
+
+	<lifecycleListener type="com.rsuite.demo.mpg.PluginActivator" />
+
+	<extensionProvider id="rsuite.WebService">
+		<staticWebService path="/WebContent" root="/rsuite-demo-mpg-plugin"/>
+		<remoteApiDefinition id="demo.mpg.webservice.startWorkflow" handler="com.rsuite.demo.mpg.webservice.StartWorkflowWebService" description="Start Workflow" />
+		<remoteApiDefinition id="demo.mpg.webservice.updateWorkflow" handler="com.rsuite.demo.mpg.webservice.UpdateWorkflowWebService" description="Update Workflow Details" />
+		<remoteApiDefinition id="demo.mpg.webservice.redirector" handler="com.rsuite.demo.mpg.webservice.RedirectorWebService" description="Redirector" />
+	</extensionProvider>
+
+	<extensionProvider id="rsuite.Workflow">
+		<workflowDefinitions>
+			<file key="ManuscriptWorkflowAction" filename="workflows/ManuscriptWorkflowAction.bpmn" />
+		</workflowDefinitions>
+	</extensionProvider>
+
+	<extensionProvider id="rsuite.Workflow">
+		<actionHandler label="" description="" type="com.rsuite.demo.mpg.actionhandler.NotifyToListTaskCreatedHandler" />
+		<actionHandler label="" description="" type="com.rsuite.demo.mpg.actionhandler.NotifyToListWorkflowStartedHandler" />
+		<actionHandler label="" description="" type="com.rsuite.demo.mpg.actionhandler.NotifyToListWorkflowCompletedHandler" />
+	</extensionProvider>
+
+	<extensionProvider id="rsuite.Forms">
+
+		<datatypeDefinition name="demo.mpg:users" label="Users List" formControlType="select" baseType="string" description="Users list">
+			<optionListProvider handler="com.rsuite.demo.mpg.datatype.UsersDataType" />
+		</datatypeDefinition>
+		<datatypeDefinition name="demo.mpg:empty-datatype" label="Empty type" formControlType="text" baseType="string" description="Empty item type">
+			<optionList>
+				<option value="" label=""/>
+			</optionList>
+		</datatypeDefinition>
+
+		<formDefinition description="Manuscript Workflow" handler="com.rsuite.demo.mpg.form.WorkflowAdjusterFormHandler" id="rsuite.demo.mpg.form.manuscript" label="Manuscript Workflow">
+			<instructions>
+				Manuscript Workflow Start Screen.
+			</instructions>
+			<paramList>
+				<param>
+					<col>1</col>
+					<name>info-note</name>
+					<formControlType>checkbox</formControlType>
+					<optionList>
+						<option label="Match Styles" value="(Match Styles)"/>
+					</optionList>
+				</param>
+				<param>
+					<col>1</col>
+					<name>workflow-name</name>
+					<value>Manuscript Workflow</value>
+					<formControlType>hidden</formControlType>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-title</name>
+					<label>Title</label>
+					<readOnly>true</readOnly>
+					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
+					<value>How To Train Your Earl</value>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-author</name>
+					<label>Author</label>
+					<readOnly>true</readOnly>
+					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
+					<value>Amelia Grey</value>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-isbn</name>
+					<label>ISBN</label>
+					<readOnly>true</readOnly>
+					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
+					<value>9781250218803</value>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-imprint</name>
+					<label>Imprint</label>
+					<readOnly>true</readOnly>
+					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
+					<value>St. Martin's Paperbacks</value>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-binding</name>
+					<label>Binding</label>
+					<readOnly>true</readOnly>
+					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
+					<value>Mass Market Paperback</value>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-edition-publication-date</name>
+					<label>Publication Date</label>
+					<readOnly>true</readOnly>
+					<value></value>
+				</param>
+				<param>
+					<col>1</col>
+					<name>info-bbd</name>
+					<label>Bound Book Date</label>
+					<readOnly>true</readOnly>
+					<value></value>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-label</name>
+					<label>Roles</label>
+					<formControlType>label</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-editor</name>
+					<label>Editor:</label>
+					<formControlType>select</formControlType>
+					<datatype name="demo.mpg:users"/>
+					<validation errorMessage="user is required." regex="^\s*\S.*$" required="true"/>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-editorial-assistant</name>
+					<label>Editorial Assistant:</label>
+					<formControlType>select</formControlType>
+					<datatype name="demo.mpg:users"/>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-production-editor</name>
+					<label>Production Editor:</label>
+					<formControlType>select</formControlType>
+					<datatype name="demo.mpg:users"/>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-managing-editor</name>
+					<label>Managing Editor:</label>
+					<formControlType>select</formControlType>
+					<datatype name="demo.mpg:users"/>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-design</name>
+					<label>Design:</label>
+					<formControlType>select</formControlType>
+					<datatype name="demo.mpg:users"/>
+				</param>
+				<param>
+					<col>2</col>
+					<name>role-production-manager</name>
+					<label>Production Manager:</label>
+					<formControlType>select</formControlType>
+					<datatype name="demo.mpg:users"/>
+				</param>
+				<!-- notifications -->
+				<param>
+					<col>2</col>
+					<name>notification-list</name>
+					<label>Notification List</label>
+					<formControlType>orderedselect</formControlType>
+					<allowMultiple>true</allowMultiple>
+					<datatype name="demo.mpg:users"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>due-date-label</name>
+					<label>Due Dates</label>
+					<formControlType>label</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>due-date-upload-manuscript</name>
+					<label>MS due to Managing Editor:</label>
+					<formControlType>datepicker</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+					<validation errorMessage="date is required." required="true"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>due-date-prep-ms-for-pre-edit</name>
+					<label>MS due to Production Editor:</label>
+					<formControlType>datepicker</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>due-date-pre-edit-copyedit-ms</name>
+					<label>MS due to Ed/Au:</label>
+					<formControlType>datepicker</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>due-date-ed-au-review-copyedited-ms</name>
+					<label>AuRev MS due to Production Editor:</label>
+					<formControlType>datepicker</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>due-date-prep-ms-for-composition</name>
+					<label>MS due to Design/Comp:</label>
+					<formControlType>datepicker</formControlType>
+					<datatype name="demo.mpg:empty-datatype"/>
+				</param>
+				<param>
+					<col>3</col>
+					<name>initial-comments</name>
+					<label>Initial Comments (Optional):</label>
+					<formControlType>hidden</formControlType>
+				</param>
+			</paramList>
+		</formDefinition>
+
+	</extensionProvider>
+
+</rsuite-plugin>

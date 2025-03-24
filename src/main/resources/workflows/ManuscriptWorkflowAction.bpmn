@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:activiti="http://activiti.org/bpmn"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/processdef">
+  <process id="ManuscriptWorkflowAction" name="Manuscript Workflow" isExecutable="true">
+    <startEvent id="StartNode" name="StartNode"></startEvent>
+    <sequenceFlow id="sequenceFlow-b06eb5b3-260c-4a30-aeea-787317436a04" sourceRef="StartNode" targetRef="UploadManuscript">
+    </sequenceFlow>
+    <userTask id="UploadManuscript" name="Upload Manuscript" activiti:candidateGroups="RSuiteAdministrator">
+      <documentation>Upload materials to RSuite: manuscript, art, transmittal, and any other supporting files.</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.AssignTaskFromVariable">
+          <activiti:field name="actorNamingVariable">
+            <activiti:string><![CDATA[role-editor]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="usersNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="rolesNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.SetTaskDueDateFromVariable">
+          <activiti:field name="dueDateVariable">
+            <activiti:string><![CDATA[due-date-upload-manuscript]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.rsuite.demo.mpg.actionhandler.NotifyToListTaskCreatedHandler"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sequenceFlow-306f2940-e15c-45a8-a764-8411cf8b304e" sourceRef="UploadManuscript" targetRef="PrepMSforPreEdit"></sequenceFlow>
+    <userTask id="PrepMSforPreEdit" name="Prep MS for Pre-Edit" activiti:candidateGroups="RSuiteAdministrator">
+      <documentation>Review supplied materials. Prepare MS for pre-edit.</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.AssignTaskFromVariable">
+          <activiti:field name="actorNamingVariable">
+            <activiti:string><![CDATA[role-managing-editor]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="usersNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="rolesNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.SetTaskDueDateFromVariable">
+          <activiti:field name="dueDateVariable">
+            <activiti:string><![CDATA[due-due-date-prep-ms-for-pre-edit]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.rsuite.demo.mpg.actionhandler.NotifyToListTaskCreatedHandler"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="PrepMSforPreEditGateway"></exclusiveGateway>
+    <sequenceFlow id="sequenceFlow-0f985da3-4d3d-4c3a-93fc-6e423139e816" name="Send for Pre-Edit &amp; Copyedit Manuscript" sourceRef="PrepMSforPreEditGateway" targetRef="PreEditStyleMS">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "PreEditStyleMS"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-62d0461e-18e4-438f-94a1-569246a40a70" name="Return to Upload Manuscript" sourceRef="PrepMSforPreEditGateway" targetRef="UploadManuscript">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "UploadManuscript"}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="PreEditStyleMS" name="Pre-Edit &amp; Copyedit MS" activiti:candidateGroups="RSuiteAdministrator">
+      <documentation>Send MS for pre-edit; review for accuracy. Send MS for copyedit.</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.AssignTaskFromVariable">
+          <activiti:field name="actorNamingVariable">
+            <activiti:string><![CDATA[role-production-editor]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="usersNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="rolesNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.SetTaskDueDateFromVariable">
+          <activiti:field name="dueDateVariable">
+            <activiti:string><![CDATA[due-date-pre-edit-copyedit-ms]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.rsuite.demo.mpg.actionhandler.NotifyToListTaskCreatedHandler"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <exclusiveGateway id="PreEditStyleMSGateway"></exclusiveGateway>
+    <userTask id="SendCopyeditedMSforReview" name="Review Copyedited Manuscript" activiti:candidateGroups="RSuiteAdministrator">
+      <documentation>Review copyedited MS with Author. Upload file with comments/corrections.</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.AssignTaskFromVariable">
+          <activiti:field name="actorNamingVariable">
+            <activiti:string><![CDATA[role-editor]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="usersNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="rolesNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.SetTaskDueDateFromVariable">
+          <activiti:field name="dueDateVariable">
+            <activiti:string><![CDATA[due-date-ed-au-review-copyedited-ms]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.rsuite.demo.mpg.actionhandler.NotifyToListTaskCreatedHandler"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sequenceFlow-cd10e367-285d-465d-9d8c-eec986091db7" sourceRef="SendCopyeditedMSforReview" targetRef="SendCopyeditedMSforReviewGateway"></sequenceFlow>
+    <exclusiveGateway id="SendCopyeditedMSforReviewGateway"></exclusiveGateway>
+    <sequenceFlow id="sequenceFlow-303d25ca-46fb-4e11-8f88-9370fb304589" name="Complete Manuscript Review" sourceRef="SendCopyeditedMSforReviewGateway" targetRef="PrepMSforComposition">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "PrepMSforComposition"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-fda704dd-2462-4a87-b30a-44bece83a883" name="Return to Copyedit Manuscript" sourceRef="SendCopyeditedMSforReviewGateway" targetRef="PreEditStyleMS">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "PreEditStyleMS"}]]></conditionExpression>
+    </sequenceFlow>
+    <userTask id="PrepMSforComposition" name="Prep MS for Composition" activiti:candidateGroups="RSuiteAdministrator">
+      <documentation>Resolve track changes and clean file to send to Composition. Note new elements/styles and/or other important updates in memo. Validate and transform MS.</documentation>
+      <extensionElements>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.AssignTaskFromVariable">
+          <activiti:field name="actorNamingVariable">
+            <activiti:string><![CDATA[role-production-editor]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="usersNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+          <activiti:field name="rolesNamingVariable">
+            <activiti:string><![CDATA[""]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.reallysi.rsuite.system.workflow.taskListeners.SetTaskDueDateFromVariable">
+          <activiti:field name="dueDateVariable">
+            <activiti:string><![CDATA[due-date-prep-ms-for-composition]]></activiti:string>
+          </activiti:field>
+        </activiti:taskListener>
+        <activiti:taskListener event="create" class="com.rsuite.demo.mpg.actionhandler.NotifyToListTaskCreatedHandler"></activiti:taskListener>
+      </extensionElements>
+    </userTask>
+    <sequenceFlow id="sequenceFlow-55581101-ae8c-4372-9a86-dbb92213be5b" sourceRef="PrepMSforComposition" targetRef="PrepMSforCompositionGateway"></sequenceFlow>
+    <exclusiveGateway id="PrepMSforCompositionGateway"></exclusiveGateway>
+    <sequenceFlow id="sequenceFlow-f3d0d79d-d6c4-442f-bee4-a202b3476152" name="End workflow" sourceRef="PrepMSforCompositionGateway" targetRef="EndNode">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "EndNode"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-0bce6fe0-5e42-4b2d-80db-5bdb83e6ffe6" name="Return to Review Copyedited MS" sourceRef="PrepMSforCompositionGateway" targetRef="SendCopyeditedMSforReview">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "SendCopyeditedMSforReview"}]]></conditionExpression>
+    </sequenceFlow>
+    <endEvent id="EndNode" name="EndNode"></endEvent>
+    <sequenceFlow id="sequenceFlow-e61313e2-3762-4f00-acf8-c61ec8298b5e" name="Return to Prep MS for Pre-Edit" sourceRef="PreEditStyleMSGateway" targetRef="PrepMSforPreEdit">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "PrepMSforPreEdit"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-ebe92c10-5793-45c5-911d-6b8343391508" sourceRef="PreEditStyleMS" targetRef="PreEditStyleMSGateway"></sequenceFlow>
+    <sequenceFlow id="sequenceFlow-b0c7354b-0551-45a2-838a-cf7e82e9dc53" name="Send Copyedited MS for Review" sourceRef="PreEditStyleMSGateway" targetRef="SendCopyeditedMSforReview">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "SendCopyeditedMSforReview"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-d407e64c-582f-45a1-b42f-43bc98d1fee1" name="Start Design Workflow" sourceRef="PreEditStyleMSGateway" targetRef="PreEditStyleMS">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "PreEditStyleMS"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-bba688a6-ba2d-49bb-b390-fce528589ce4" name="Skip MS Review" sourceRef="PreEditStyleMSGateway" targetRef="PrepMSforComposition">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${target == "PrepMSforComposition"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sequenceFlow-cc17ac48-34a8-46e5-95f8-e530174d05b0" sourceRef="PrepMSforPreEdit" targetRef="PrepMSforPreEditGateway"></sequenceFlow>
+  </process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_ManuscriptWorkflowAction">
+    <bpmndi:BPMNPlane bpmnElement="ManuscriptWorkflowAction" id="BPMNPlane_ManuscriptWorkflowAction">
+      <bpmndi:BPMNShape bpmnElement="StartNode" id="BPMNShape_StartNode">
+        <omgdc:Bounds height="30.0" width="30.0" x="15.0" y="140.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="UploadManuscript" id="BPMNShape_UploadManuscript">
+        <omgdc:Bounds height="60.0" width="100.0" x="115.0" y="125.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PrepMSforPreEdit" id="BPMNShape_PrepMSforPreEdit">
+        <omgdc:Bounds height="60.0" width="100.0" x="290.0" y="125.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PrepMSforPreEditGateway" id="BPMNShape_PrepMSforPreEditGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="245.0" y="430.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PreEditStyleMS" id="BPMNShape_PreEditStyleMS">
+        <omgdc:Bounds height="60.0" width="100.0" x="535.0" y="420.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PreEditStyleMSGateway" id="BPMNShape_PreEditStyleMSGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="570.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SendCopyeditedMSforReview" id="BPMNShape_SendCopyeditedMSforReview">
+        <omgdc:Bounds height="60.0" width="100.0" x="1105.0" y="385.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="SendCopyeditedMSforReviewGateway" id="BPMNShape_SendCopyeditedMSforReviewGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="900.0" y="435.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PrepMSforComposition" id="BPMNShape_PrepMSforComposition">
+        <omgdc:Bounds height="60.0" width="100.0" x="870.0" y="125.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="PrepMSforCompositionGateway" id="BPMNShape_PrepMSforCompositionGateway">
+        <omgdc:Bounds height="40.0" width="40.0" x="1140.0" y="135.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape bpmnElement="EndNode" id="BPMNShape_EndNode">
+        <omgdc:Bounds height="28.0" width="28.0" x="1260.0" y="141.0"></omgdc:Bounds>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-e61313e2-3762-4f00-acf8-c61ec8298b5e" id="BPMNEdge_sequenceFlow-e61313e2-3762-4f00-acf8-c61ec8298b5e">
+        <omgdi:waypoint x="570.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="390.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-55581101-ae8c-4372-9a86-dbb92213be5b" id="BPMNEdge_sequenceFlow-55581101-ae8c-4372-9a86-dbb92213be5b">
+        <omgdi:waypoint x="970.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1140.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-fda704dd-2462-4a87-b30a-44bece83a883" id="BPMNEdge_sequenceFlow-fda704dd-2462-4a87-b30a-44bece83a883">
+        <omgdi:waypoint x="900.2941176470588" y="454.70588235294116"></omgdi:waypoint>
+        <omgdi:waypoint x="635.0" y="450.74626865671644"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-cd10e367-285d-465d-9d8c-eec986091db7" id="BPMNEdge_sequenceFlow-cd10e367-285d-465d-9d8c-eec986091db7">
+        <omgdi:waypoint x="1105.0" y="423.51063829787233"></omgdi:waypoint>
+        <omgdi:waypoint x="937.0909090909091" y="452.09090909090907"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-306f2940-e15c-45a8-a764-8411cf8b304e" id="BPMNEdge_sequenceFlow-306f2940-e15c-45a8-a764-8411cf8b304e">
+        <omgdi:waypoint x="215.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="290.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-303d25ca-46fb-4e11-8f88-9370fb304589" id="BPMNEdge_sequenceFlow-303d25ca-46fb-4e11-8f88-9370fb304589">
+        <omgdi:waypoint x="920.0" y="435.0"></omgdi:waypoint>
+        <omgdi:waypoint x="920.0" y="185.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-b0c7354b-0551-45a2-838a-cf7e82e9dc53" id="BPMNEdge_sequenceFlow-b0c7354b-0551-45a2-838a-cf7e82e9dc53">
+        <omgdi:waypoint x="603.6969696969697" y="161.3030303030303"></omgdi:waypoint>
+        <omgdi:waypoint x="1105.0" y="391.9911504424779"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-f3d0d79d-d6c4-442f-bee4-a202b3476152" id="BPMNEdge_sequenceFlow-f3d0d79d-d6c4-442f-bee4-a202b3476152">
+        <omgdi:waypoint x="1180.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="1260.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-ebe92c10-5793-45c5-911d-6b8343391508" id="BPMNEdge_sequenceFlow-ebe92c10-5793-45c5-911d-6b8343391508">
+        <omgdi:waypoint x="584.6444515306123" y="420.0"></omgdi:waypoint>
+        <omgdi:waypoint x="581.6417468939924" y="166.64174689399238"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-cc17ac48-34a8-46e5-95f8-e530174d05b0" id="BPMNEdge_sequenceFlow-cc17ac48-34a8-46e5-95f8-e530174d05b0">
+        <omgdi:waypoint x="333.0504137630662" y="185.0"></omgdi:waypoint>
+        <omgdi:waypoint x="274.17097643990627" y="439.17097643990627"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-d407e64c-582f-45a1-b42f-43bc98d1fee1" id="BPMNEdge_sequenceFlow-d407e64c-582f-45a1-b42f-43bc98d1fee1">
+        <omgdi:waypoint x="601.7225313310008" y="163.27746866899923"></omgdi:waypoint>
+        <omgdi:waypoint x="609.9678822467471" y="420.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-0f985da3-4d3d-4c3a-93fc-6e423139e816" id="BPMNEdge_sequenceFlow-0f985da3-4d3d-4c3a-93fc-6e423139e816">
+        <omgdi:waypoint x="285.0" y="450.0"></omgdi:waypoint>
+        <omgdi:waypoint x="535.0" y="450.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-bba688a6-ba2d-49bb-b390-fce528589ce4" id="BPMNEdge_sequenceFlow-bba688a6-ba2d-49bb-b390-fce528589ce4">
+        <omgdi:waypoint x="597.1587485650155" y="142.1587485650154"></omgdi:waypoint>
+        <omgdi:waypoint x="849.515625" y="142.1587485650154"></omgdi:waypoint>
+        <omgdi:waypoint x="870.0" y="145.89071057593645"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-62d0461e-18e4-438f-94a1-569246a40a70" id="BPMNEdge_sequenceFlow-62d0461e-18e4-438f-94a1-569246a40a70">
+        <omgdi:waypoint x="259.9367088607595" y="435.0632911392405"></omgdi:waypoint>
+        <omgdi:waypoint x="175.16949152542372" y="185.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-b06eb5b3-260c-4a30-aeea-787317436a04" id="BPMNEdge_sequenceFlow-b06eb5b3-260c-4a30-aeea-787317436a04">
+        <omgdi:waypoint x="45.0" y="155.0"></omgdi:waypoint>
+        <omgdi:waypoint x="115.0" y="155.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge bpmnElement="sequenceFlow-0bce6fe0-5e42-4b2d-80db-5bdb83e6ffe6" id="BPMNEdge_sequenceFlow-0bce6fe0-5e42-4b2d-80db-5bdb83e6ffe6">
+        <omgdi:waypoint x="1159.622641509434" y="174.62264150943398"></omgdi:waypoint>
+        <omgdi:waypoint x="1155.576923076923" y="385.0"></omgdi:waypoint>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</definitions>
