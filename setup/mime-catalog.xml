@@ -1,0 +1,32 @@
+<mimeCatalog>
+  <contentType name="ca">
+    <subtype name="wip">
+      <icon>/assets/images/foldertypes/wip_work.png</icon>
+    </subtype>
+  </contentType>
+  <contentType name="ca">
+    <subtype name="publisher">
+      <icon>/assets/images/foldertypes/publisher_domain.png</icon>
+    </subtype>
+  </contentType>
+  <contentType name="ca">
+    <subtype name="imprint">
+      <icon>/assets/images/foldertypes/imprint_library_books.png</icon>
+    </subtype>
+  </contentType>
+  <contentType name="ca">
+    <subtype name="work">
+      <icon>/assets/images/foldertypes/work_menu_book.png</icon>
+    </subtype>
+  </contentType>
+  <contentType name="ca">
+    <subtype name="edition">
+      <icon>/assets/images/foldertypes/edition_article.png</icon>
+    </subtype>
+  </contentType>
+  <contentType name="ca">
+    <subtype name="impression">
+      <icon>/assets/images/foldertypes/impression_docs.png</icon>
+    </subtype>
+  </contentType>
+</mimeCatalog>

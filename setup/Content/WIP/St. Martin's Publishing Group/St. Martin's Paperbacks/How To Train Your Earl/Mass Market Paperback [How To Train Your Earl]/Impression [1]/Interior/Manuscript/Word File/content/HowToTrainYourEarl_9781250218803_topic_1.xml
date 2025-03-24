@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE topic PUBLIC "-//OASIS//DTD DITA 1.3 Topic//EN" "topic.dtd">
+<topic class="- topic/topic " ditaarch:DITAArchVersion="1.2" domains="(topic hi-d)       (topic indexing-d)      (topic d4p_formatting-d)      a(props d4p_renditionTarget)      (topic d4p_math-d)      (topic d4p_variables-d)      (topic d4p_verse-d)      (topic learningInteractionBase2-d learning2-d+learning-d)      (topic learningBase+learningInteractionBase-d)      (topic learningInteractionBase-d)      (topic learningInteractionBase2-d)      (topic xml-d)      a(base rsuiteIdAtt)      (topic sdClassification-d)      a(base semantic)     " id="pre-edited_Grey_HowToTrainYourEarl_9781250218803_converted_topic_1" outputclass="Section-TitlepageSTI" xml:lang="en-US" xmlns:ditaarch="http://dita.oasis-open.org/architecture/2005/">
+  <title class="- topic/title ">Titlepage</title>
+  <body class="- topic/body ">
+    <p class="- topic/p " outputclass="TitleTtl">How to Train Your Earl</p>
+    <p class="- topic/p " outputclass="Author1Au1">Amelia Grey</p>
+    <draft-comment class="- topic/draft-comment " outputclass="Design-NoteDn" translate="no">[logo]</draft-comment>
+    <p class="- topic/p " outputclass="ImprintImp">St. Martin’s Paperbacks</p>
+  </body>
+</topic>
