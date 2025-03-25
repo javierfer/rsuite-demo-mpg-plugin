@@ -56,6 +56,7 @@
 					<name>info-title</name>
 					<label>Title</label>
 					<readOnly>true</readOnly>
+					<formControlType>input</formControlType>
 					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
 					<value>How To Train Your Earl</value>
 				</param>
@@ -64,6 +65,7 @@
 					<name>info-author</name>
 					<label>Author</label>
 					<readOnly>true</readOnly>
+					<formControlType>input</formControlType>
 					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
 					<value>Amelia Grey</value>
 				</param>
@@ -72,6 +74,7 @@
 					<name>info-isbn</name>
 					<label>ISBN</label>
 					<readOnly>true</readOnly>
+					<formControlType>input</formControlType>
 					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
 					<value>9781250218803</value>
 				</param>
@@ -80,6 +83,7 @@
 					<name>info-imprint</name>
 					<label>Imprint</label>
 					<readOnly>true</readOnly>
+					<formControlType>input</formControlType>
 					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
 					<value>St. Martin's Paperbacks</value>
 				</param>
@@ -88,6 +92,7 @@
 					<name>info-binding</name>
 					<label>Binding</label>
 					<readOnly>true</readOnly>
+					<formControlType>input</formControlType>
 					<!-- hardcoded for demo - use form handler to add value from impression lmd-->
 					<value>Mass Market Paperback</value>
 				</param>
@@ -95,6 +100,7 @@
 					<col>1</col>
 					<name>info-edition-publication-date</name>
 					<label>Publication Date</label>
+					<formControlType>input</formControlType>
 					<readOnly>true</readOnly>
 					<value></value>
 				</param>
@@ -102,6 +108,7 @@
 					<col>1</col>
 					<name>info-bbd</name>
 					<label>Bound Book Date</label>
+					<formControlType>input</formControlType>
 					<readOnly>true</readOnly>
 					<value></value>
 				</param>
